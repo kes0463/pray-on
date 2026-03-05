@@ -1,0 +1,28 @@
+# ====================================================
+# Pray ON (프레이온) - 필요한 파이썬 패키지 목록
+# 설치 방법: pip install -r requirements.txt
+# ====================================================
+
+# Flask: Python 웹 프레임워크 (서버 역할)
+flask==3.1.0
+
+# python-dotenv: .env 파일에서 API 키를 읽어오는 라이브러리
+python-dotenv==1.0.1
+
+# google-generativeai: Gemini (기도문 생성)
+google-generativeai==0.8.4
+
+# google-cloud-texttospeech: Google Cloud TTS (한국어 WaveNet/Neural2 음성)
+google-cloud-texttospeech==2.17.2
+
+# firebase-admin: Firebase 서버 측 연동 라이브러리 (Firestore DB 저장)
+firebase-admin==6.6.0
+
+# flask-cors: 안드로이드 앱에서 API 호출 허용 (Cross-Origin Resource Sharing)
+flask-cors==5.0.1
+
+# gunicorn: Railway 배포용 프로덕션 WSGI 서버
+gunicorn==23.0.0
+
+# elevenlabs: ElevenLabs TTS 호출
+elevenlabs==1.54.0

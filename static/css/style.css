@@ -1,0 +1,745 @@
+/* ====================================================
+   style.css - Pray ON 디자인 시스템
+   파스텔 보라 + 따뜻한 베이지 + 글로스모피즘
+   ==================================================== */
+
+/* ── CSS 변수 (디자인 토큰) ── */
+:root {
+  /* 컬러 팔레트 */
+  --clr-bg-start: #f5e6ff;
+  /* 연한 라벤더 */
+  --clr-bg-end: #fff5eb;
+  /* 따뜻한 크림 */
+  --clr-primary: #9b59b6;
+  /* 보라 (주요 액션) */
+  --clr-primary-dark: #7d3c98;
+  --clr-primary-light: #d7aefb;
+  --clr-accent: #e8a87c;
+  /* 따뜻한 복숭아 (커피 버튼) */
+  --clr-text: #3d2c4a;
+  /* 짙은 보라 계열 텍스트 */
+  --clr-text-muted: #8a7498;
+  --clr-card-bg: rgba(255, 255, 255, 0.6);
+  --clr-card-border: rgba(180, 130, 220, 0.25);
+  --clr-gold: #c8a951;
+  /* 성경 구절 강조 */
+
+  /* 타이포그래피 */
+  --font-serif: 'Noto Serif KR', 'Georgia', serif;
+  --font-display: 'Playfair Display', serif;
+
+  /* 간격 & 반경 */
+  --radius-card: 24px;
+  --radius-btn: 50px;
+  --shadow-card: 0 8px 32px rgba(120, 60, 180, 0.12);
+  --shadow-btn: 0 4px 20px rgba(155, 89, 182, 0.35);
+  --transition: 0.3s ease;
+}
+
+/* ── 기본 리셋 ── */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: var(--font-serif);
+  background: linear-gradient(135deg, var(--clr-bg-start) 0%, var(--clr-bg-end) 100%);
+  min-height: 100vh;
+  color: var(--clr-text);
+  line-height: 1.75;
+  padding-bottom: 100px;
+  /* 하단 고정 바 공간 */
+}
+
+/* ── 배경 장식 원 (글로우 이펙트) ── */
+.bg-orb {
+  position: fixed;
+  border-radius: 50%;
+  filter: blur(70px);
+  opacity: 0.35;
+  pointer-events: none;
+  z-index: 0;
+  animation: float 8s ease-in-out infinite alternate;
+}
+
+.bg-orb--1 {
+  width: 500px;
+  height: 500px;
+  background: radial-gradient(circle, #d7aefb, transparent);
+  top: -150px;
+  left: -150px;
+  animation-delay: 0s;
+}
+
+.bg-orb--2 {
+  width: 400px;
+  height: 400px;
+  background: radial-gradient(circle, #ffd6a5, transparent);
+  bottom: 100px;
+  right: -100px;
+  animation-delay: 3s;
+}
+
+.bg-orb--3 {
+  width: 300px;
+  height: 300px;
+  background: radial-gradient(circle, #c2e9fb, transparent);
+  top: 40%;
+  left: 50%;
+  animation-delay: 6s;
+}
+
+@keyframes float {
+  from {
+    transform: translateY(0) scale(1);
+  }
+
+  to {
+    transform: translateY(-30px) scale(1.05);
+  }
+}
+
+/* ── 사이트 헤더 ── */
+.site-header {
+  position: relative;
+  z-index: 10;
+  text-align: center;
+  padding: 48px 24px 24px;
+}
+
+.header-inner {
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+}
+
+.logo {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.logo-icon {
+  font-size: 2.2rem;
+  animation: float 4s ease-in-out infinite alternate;
+}
+
+.logo-text {
+  font-family: var(--font-display);
+  font-size: 2.4rem;
+  font-weight: 400;
+  color: var(--clr-primary-dark);
+  letter-spacing: -0.02em;
+}
+
+.logo-text em {
+  font-style: italic;
+  color: var(--clr-primary);
+}
+
+.header-tagline {
+  font-size: 0.9rem;
+  color: var(--clr-text-muted);
+  letter-spacing: 0.08em;
+}
+
+/* ── 메인 레이아웃 ── */
+.main-content {
+  position: relative;
+  z-index: 10;
+  max-width: 680px;
+  margin: 0 auto;
+  padding: 0 20px 48px;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+/* ── 카드 (글로스모피즘) ── */
+.card {
+  background: var(--clr-card-bg);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid var(--clr-card-border);
+  border-radius: var(--radius-card);
+  padding: 32px 28px;
+  box-shadow: var(--shadow-card);
+  animation: fadeInUp 0.6s ease both;
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(24px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* ── 섹션 제목 ── */
+.section-title {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 12px;
+}
+
+.section-icon {
+  font-size: 1rem;
+  color: var(--clr-primary-light);
+  flex-shrink: 0;
+}
+
+.section-title h1,
+.section-title h2 {
+  font-family: var(--font-display);
+  font-size: 1.25rem;
+  font-weight: 400;
+  color: var(--clr-primary-dark);
+}
+
+.section-subtitle {
+  font-size: 0.88rem;
+  color: var(--clr-text-muted);
+  margin-bottom: 24px;
+  line-height: 1.7;
+}
+
+/* ── 텍스트에어리어 ── */
+.input-group {
+  position: relative;
+  margin-bottom: 8px;
+}
+
+.emotion-textarea {
+  width: 100%;
+  min-height: 130px;
+  padding: 16px 18px;
+  border: 1.5px solid var(--clr-card-border);
+  border-radius: 16px;
+  background: rgba(255, 255, 255, 0.7);
+  font-family: var(--font-serif);
+  font-size: 0.95rem;
+  color: var(--clr-text);
+  resize: vertical;
+  transition: border-color var(--transition), box-shadow var(--transition);
+  outline: none;
+}
+
+.emotion-textarea::placeholder {
+  color: var(--clr-text-muted);
+  opacity: 0.7;
+  font-size: 0.875rem;
+}
+
+.emotion-textarea:focus {
+  border-color: var(--clr-primary-light);
+  box-shadow: 0 0 0 4px rgba(155, 89, 182, 0.12);
+}
+
+.char-counter {
+  text-align: right;
+  font-size: 0.78rem;
+  color: var(--clr-text-muted);
+  margin-top: 4px;
+  margin-bottom: 16px;
+}
+
+/* ── 설정 아코디언 (details/summary) ── */
+.settings-accordion {
+  background: rgba(255, 255, 255, 0.4);
+  border: 1px solid var(--clr-card-border);
+  border-radius: 12px;
+  margin-bottom: 24px;
+  overflow: hidden;
+  transition: all var(--transition);
+}
+
+.settings-summary {
+  padding: 14px 16px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--clr-primary-dark);
+  user-select: none;
+  list-style: none;
+  /* 크롬 화살표 숨기기 */
+  transition: background var(--transition);
+}
+
+.settings-summary::-webkit-details-marker {
+  display: none;
+  /* 사파리 화살표 숨기기 */
+}
+
+.settings-summary:hover {
+  background: rgba(255, 255, 255, 0.6);
+}
+
+.settings-icon {
+  font-size: 1.1rem;
+}
+
+.settings-content {
+  padding: 0 16px 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  border-top: 1px dashed rgba(155, 89, 182, 0.15);
+  margin-top: 8px;
+  animation: fadeIn 0.3s ease;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.setting-item {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.setting-item label {
+  font-size: 0.8rem;
+  color: var(--clr-text-muted);
+  font-weight: 600;
+  letter-spacing: 0.05em;
+}
+
+.style-select {
+  width: 100%;
+  padding: 10px 12px;
+  border: 1.5px solid var(--clr-card-border);
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.8);
+  font-family: var(--font-serif);
+  font-size: 0.9rem;
+  color: var(--clr-text);
+  outline: none;
+  cursor: pointer;
+  appearance: none;
+  /* 네이티브 화살표 숨기기 */
+  background-image: url("data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22292.4%22%20height%3D%22292.4%22%3E%3Cpath%20fill%3D%22%239b59b6%22%20d%3D%22M287%2069.4a17.6%2017.6%200%200%200-13-5.4H18.4c-5%200-9.3%201.8-12.9%205.4A17.6%2017.6%200%200%200%200%2082.2c0%205%201.8%209.3%205.4%2012.9l128%20127.9c3.6%203.6%207.8%205.4%2012.8%205.4s9.2-1.8%2012.8-5.4L287%2095c3.5-3.5%205.4-7.8%205.4-12.8%200-5-1.9-9.2-5.5-12.8z%22%2F%3E%3C%2Fsvg%3E");
+  background-repeat: no-repeat;
+  background-position: right 12px top 50%;
+  background-size: 10px auto;
+  transition: border-color var(--transition);
+}
+
+.style-select:focus {
+  border-color: var(--clr-primary-light);
+}
+
+/* ── 버튼 ── */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 14px 32px;
+  border: none;
+  border-radius: var(--radius-btn);
+  font-family: var(--font-serif);
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all var(--transition);
+  text-decoration: none;
+  white-space: nowrap;
+}
+
+/* 주 버튼 */
+.btn--primary {
+  width: 100%;
+  background: linear-gradient(135deg, var(--clr-primary) 0%, #6c3483 100%);
+  color: #fff;
+  box-shadow: var(--shadow-btn);
+}
+
+.btn--primary:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 28px rgba(155, 89, 182, 0.45);
+}
+
+.btn--primary:active {
+  transform: translateY(0);
+}
+
+.btn--primary:disabled {
+  background: #c5aed8;
+  cursor: not-allowed;
+  box-shadow: none;
+  transform: none;
+}
+
+.btn-icon {
+  font-size: 1.1rem;
+}
+
+/* 보조 버튼 */
+.btn--secondary {
+  background: rgba(155, 89, 182, 0.1);
+  color: var(--clr-primary-dark);
+  border: 1.5px solid var(--clr-primary-light);
+}
+
+.btn--secondary:hover {
+  background: rgba(155, 89, 182, 0.2);
+  transform: translateY(-1px);
+}
+
+/* 유령 버튼 */
+.btn--ghost {
+  background: transparent;
+  color: var(--clr-text-muted);
+  border: 1.5px solid rgba(130, 100, 160, 0.25);
+}
+
+.btn--ghost:hover {
+  background: rgba(255, 255, 255, 0.5);
+  color: var(--clr-primary);
+}
+
+/* 커피 버튼 */
+.btn--coffee {
+  background: linear-gradient(135deg, var(--clr-accent) 0%, #d4874a 100%);
+  color: #fff;
+  font-size: 0.95rem;
+  padding: 12px 28px;
+  box-shadow: 0 4px 16px rgba(210, 120, 60, 0.35);
+}
+
+.btn--coffee:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(210, 120, 60, 0.45);
+}
+
+/* 버튼 그룹 */
+.btn-group {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+  margin-top: 16px;
+}
+
+.btn-group .btn {
+  flex: 1;
+  min-width: 140px;
+}
+
+/* ── 로딩 ── */
+.loading-section {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  padding: 32px;
+}
+
+.loader-ring {
+  width: 56px;
+  height: 56px;
+  border: 4px solid rgba(155, 89, 182, 0.2);
+  border-top-color: var(--clr-primary);
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.loading-text {
+  font-size: 1rem;
+  color: var(--clr-primary-dark);
+  font-weight: 600;
+}
+
+.loading-sub {
+  font-size: 0.85rem;
+  color: var(--clr-text-muted);
+}
+
+/* ── 기도문 출력 ── */
+.prayer-text-box {
+  background: rgba(255, 248, 240, 0.8);
+  border-left: 4px solid var(--clr-primary-light);
+  border-radius: 12px;
+  padding: 24px 22px;
+  margin-bottom: 20px;
+}
+
+.prayer-text {
+  font-size: 1.1rem;
+  line-height: 1.8;
+  color: var(--clr-text);
+  white-space: normal;
+  /* main.js에서 <br>로 변환하므로 normal로 설정 */
+  word-break: keep-all;
+  /* 한글 단어 단위 줄바꿈으로 가독성 향상 */
+}
+
+/* 성경 구절 강조 (괄호로 묶인 부분) */
+.prayer-text .bible-ref {
+  color: var(--clr-gold);
+  font-style: italic;
+  font-weight: 600;
+}
+
+/* ── 오디오 플레이어 ── */
+.audio-player-section {
+  background: rgba(215, 174, 251, 0.15);
+  border-radius: 16px;
+  padding: 16px 18px;
+  margin-bottom: 4px;
+}
+
+.audio-label {
+  font-size: 0.85rem;
+  color: var(--clr-text-muted);
+  margin-bottom: 10px;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+}
+
+.audio-player {
+  width: 100%;
+  border-radius: 50px;
+  outline: none;
+}
+
+/* Chrome 기본 오디오 스타일 개선 */
+audio::-webkit-media-controls-panel {
+  background: linear-gradient(90deg, #f0e5ff, #fff5eb);
+}
+
+/* ── 기도 기록 ── */
+.history-section {
+  padding: 24px 28px;
+}
+
+.history-toggle {
+  cursor: pointer;
+  user-select: none;
+  margin-bottom: 0 !important;
+}
+
+.history-toggle:hover .toggle-arrow {
+  color: var(--clr-primary);
+}
+
+.toggle-arrow {
+  margin-left: auto;
+  font-size: 1.2rem;
+  color: var(--clr-primary-light);
+  transition: transform var(--transition);
+}
+
+.toggle-arrow.open {
+  transform: rotate(180deg);
+}
+
+.history-content {
+  margin-top: 20px;
+}
+
+.history-list {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+/* 개별 기도 기록 카드 */
+.history-item {
+  background: rgba(255, 255, 255, 0.55);
+  border: 1px solid var(--clr-card-border);
+  border-radius: 16px;
+  overflow: hidden;
+  transition: box-shadow var(--transition);
+}
+
+.history-item:hover {
+  box-shadow: 0 4px 16px rgba(120, 60, 180, 0.1);
+}
+
+.history-item-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 14px 18px;
+  cursor: pointer;
+  gap: 12px;
+}
+
+.history-emotion {
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--clr-primary-dark);
+  flex: 1;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.history-date {
+  font-size: 0.75rem;
+  color: var(--clr-text-muted);
+  flex-shrink: 0;
+}
+
+.history-item-body {
+  padding: 0 18px 16px;
+  border-top: 1px solid rgba(180, 130, 220, 0.15);
+}
+
+.history-prayer-text {
+  font-size: 0.875rem;
+  line-height: 1.8;
+  color: var(--clr-text);
+  white-space: normal;
+  padding-top: 12px;
+  margin-bottom: 12px;
+  word-break: keep-all;
+}
+
+.history-actions {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.history-audio {
+  width: 100%;
+  border-radius: 50px;
+  margin-bottom: 8px;
+}
+
+.btn--danger {
+  background: rgba(220, 80, 80, 0.1);
+  color: #c0392b;
+  border: 1px solid rgba(220, 80, 80, 0.25);
+  font-size: 0.8rem;
+  padding: 8px 16px;
+  border-radius: 50px;
+  cursor: pointer;
+  font-family: var(--font-serif);
+  transition: all var(--transition);
+}
+
+.btn--danger:hover {
+  background: rgba(220, 80, 80, 0.2);
+}
+
+.empty-state {
+  text-align: center;
+  color: var(--clr-text-muted);
+  font-size: 0.9rem;
+  padding: 24px;
+}
+
+/* ── 하단 고정 바 ── */
+.footer-bar {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 100;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  padding: 12px 20px 16px;
+  background: rgba(255, 248, 240, 0.85);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border-top: 1px solid rgba(200, 160, 80, 0.2);
+  box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.06);
+}
+
+.footer-copy {
+  font-size: 0.72rem;
+  color: var(--clr-text-muted);
+}
+
+/* ── 토스트 알림 ── */
+.toast {
+  position: fixed;
+  bottom: 100px;
+  left: 50%;
+  transform: translateX(-50%) translateY(20px);
+  background: var(--clr-primary-dark);
+  color: #fff;
+  padding: 12px 24px;
+  border-radius: 50px;
+  font-size: 0.88rem;
+  z-index: 200;
+  opacity: 0;
+  transition: all 0.4s ease;
+  pointer-events: none;
+}
+
+.toast.show {
+  opacity: 1;
+  transform: translateX(-50%) translateY(0);
+}
+
+/* ── 유틸리티 ── */
+.hidden {
+  display: none !important;
+}
+
+/* ── 반응형 모바일 ── */
+@media (max-width: 480px) {
+  .card {
+    padding: 24px 18px;
+  }
+
+  .logo-text {
+    font-size: 1.9rem;
+  }
+
+  .section-title h1,
+  .section-title h2 {
+    font-size: 1.05rem;
+  }
+
+  .prayer-text {
+    font-size: 0.92rem;
+  }
+
+  .btn-group {
+    flex-direction: column;
+  }
+
+  .btn-group .btn {
+    flex: none;
+    width: 100%;
+  }
+}

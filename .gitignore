@@ -1,0 +1,39 @@
+# ====================================================
+# Git에 올리면 절대 안 되는 파일 목록
+# ====================================================
+
+# 비밀 키 파일 (절대 공개하지 마세요!)
+.env
+serviceAccountKey.json
+*.json
+
+# 생성된 음성 파일 (용량이 크고 개인정보 포함)
+static/audio/*.mp3
+static/audio/*.wav
+
+# Python 관련 캐시
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.Python
+*.egg-info/
+
+# 가상 환경 폴더
+venv/
+env/
+.venv/
+
+# IDE 설정
+.vscode/
+.idea/
+*.swp
+
+# OS 파일
+.DS_Store
+Thumbs.db
+
+# Node / Capacitor
+node_modules/
+pray-on-app/android/
+pray-on-app/ios/

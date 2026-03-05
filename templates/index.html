@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Pray ON | 기도문 생성기</title>
+  <meta name="description" content="감정을 입력하면 AI가 성경 구절이 포함된 따뜻한 기도문을 작성하고 목소리로 읽어드립니다." />
+
+  <!-- Google Fonts: 나눔명조(한국어 경건체) + Playfair Display(영문 우아체) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@300;400;600&family=Playfair+Display:ital,wght@0,400;1,400&display=swap"
+    rel="stylesheet" />
+
+  <!-- 우리가 만든 CSS 파일 -->
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}" />
+</head>
+
+<body>
+
+  <!-- ========== 배경 장식 원 ========== -->
+  <div class="bg-orb bg-orb--1" aria-hidden="true"></div>
+  <div class="bg-orb bg-orb--2" aria-hidden="true"></div>
+  <div class="bg-orb bg-orb--3" aria-hidden="true"></div>
+
+  <!-- ========== 헤더 ========== -->
+  <header class="site-header">
+    <div class="header-inner">
+      <div class="logo">
+        <span class="logo-icon">🕊</span>
+        <span class="logo-text">Pray <em>ON</em></span>
+      </div>
+      <p class="header-tagline">당신의 마음을 하나님께</p>
+    </div>
+  </header>
+
+  <!-- ========== 메인 컨텐츠 ========== -->
+  <main class="main-content">
+
+    <!-- ── 기도 입력 섹션 ── -->
+    <section class="card prayer-input-section" id="input-section">
+      <div class="section-title">
+        <span class="section-icon">✦</span>
+        <h1>오늘 어떤 마음으로 기도드릴까요?</h1>
+      </div>
+      <p class="section-subtitle">지금의 감정이나 기도 제목을 솔직하게 적어주세요.<br />AI가 성경 말씀과 함께 기도문을 드립니다.</p>
+
+      <div class="input-group">
+        <textarea id="emotion-input" class="emotion-textarea"
+          placeholder="예시: 요즘 지친 것 같아요. 너무 힘들고 아무것도 하기 싫어요.&#10;예시: 새로운 일을 시작하는데 두렵고 떨려요.&#10;예시: 사랑하는 가족이 아픕니다. 치유를 위해 기도해주세요."
+          maxlength="500" rows="5"></textarea>
+        <div class="char-counter"><span id="char-count">0</span> / 500</div>
+      </div>
+
+      <!-- ⚙️ 목소리 설정 (ElevenLabs) -->
+      <details class="settings-accordion">
+        <summary class="settings-summary">
+          <span class="settings-icon">🎙️</span>
+          <span>목소리 설정</span>
+        </summary>
+        <div class="settings-content">
+          <div class="setting-item">
+            <label for="voice-select">원하시는 목소리를 선택해주세요</label>
+            <select id="voice-select">
+              <optgroup label="여성 (Female)">
+                <option value="21m00Tcm4TlvDq8ikWAM" selected>김한나 - 차분하고 감성적인 기도 (추천)</option>
+                <option value="AZnzlk1XvdvUeBnXmlld">박지민 - 밝고 친근한 목소리</option>
+              </optgroup>
+              <optgroup label="남성 (Male)">
+                <option value="ErXwobaYiN019PkySvjV">김동현 - 신뢰감 있는 따뜻한 목소리</option>
+                <option value="2EiwWnXFnvU5JabPnv8n">장동환 - 중후하고 깊이 있는 저음</option>
+                <option value="JBFqnCBsd6RMkjVDRZzb">최민준 - 인자하고 원숙한 목소리</option>
+              </optgroup>
+            </select>
+          </div>
+        </div>
+      </details>
+
+      <button id="generate-btn" class="btn btn--primary" onclick="generatePrayer()">
+        <span class="btn-icon">🙏</span>
+        <span class="btn-text">기도문 만들기</span>
+      </button>
+    </section>
+
+    <!-- ── 로딩 표시 ── -->
+    <div id="loading-section" class="loading-section hidden">
+      <div class="loader-ring"></div>
+      <p class="loading-text">기도문을 준비하고 있습니다…</p>
+      <p class="loading-sub">잠시만 기도하며 기다려 주세요 🙏</p>
+    </div>
+
+    <!-- ── 생성된 기도문 출력 섹션 ── -->
+    <section id="prayer-output-section" class="card prayer-output-section hidden">
+      <div class="section-title">
+        <span class="section-icon">✦</span>
+        <h2>오늘의 기도문</h2>
+      </div>
+
+      <!-- 기도문 텍스트 -->
+      <div class="prayer-text-box" id="prayer-text-box">
+        <p id="prayer-text" class="prayer-text"></p>
+      </div>
+
+      <!-- 오디오 플레이어 영역 -->
+      <div class="audio-player-section" id="audio-player-section">
+        <div class="audio-label">🎙 음성으로 듣기</div>
+        <audio id="prayer-audio" class="audio-player" controls></audio>
+      </div>
+
+      <!-- 버튼 그룹 -->
+      <div class="btn-group">
+        <button class="btn btn--secondary" onclick="copyPrayer()">
+          <span>📋 기도문 복사</span>
+        </button>
+        <button class="btn btn--ghost" onclick="newPrayer()">
+          <span>✦ 새 기도문</span>
+        </button>
+      </div>
+    </section>
+
+    <!-- ── 기도 기록 섹션 ── -->
+    <section class="card history-section" id="history-section">
+      <div class="section-title history-toggle" onclick="toggleHistory()" role="button" aria-expanded="false"
+        id="history-toggle">
+        <span class="section-icon">📖</span>
+        <h2>기도 기록</h2>
+        <span class="toggle-arrow" id="toggle-arrow">▾</span>
+      </div>
+
+      <div id="history-content" class="history-content hidden">
+        <div id="history-list" class="history-list">
+          <p class="empty-state">기록을 불러오는 중입니다…</p>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ========== 하단 고정 바 (후원 버튼) ========== -->
+  <div class="footer-bar">
+    <a id="coffee-btn" href="{{ coffee_url }}" target="_blank" rel="noopener noreferrer" class="btn btn--coffee">
+      ☕ 커피 한 잔으로 응원하기
+    </a>
+    <p class="footer-copy">© 2025 Pray ON · Made with 🙏 and ❤️</p>
+  </div>
+
+  <!-- 복사 성공 토스트 메시지 -->
+  <div id="toast" class="toast hidden">📋 기도문이 복사되었습니다!</div>
+
+  <!-- 우리가 만든 JavaScript 파일 -->
+  <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+</body>
+
+</html>
