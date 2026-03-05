@@ -7,6 +7,7 @@
 # ====================================================
 
 import os
+import json
 import firebase_admin
 from firebase_admin import credentials, firestore
 from dotenv import load_dotenv
@@ -27,23 +28,30 @@ def initialize_firebase():
         # 앱이 이미 있으면 아무것도 하지 않습니다.
     except ValueError:
         # 처음 실행 시 Firebase를 초기화합니다.
-
-        # serviceAccountKey.json 파일 경로를 .env에서 읽어옵니다.
-        credential_path = os.getenv(
-            "FIREBASE_CREDENTIAL_PATH", "serviceAccountKey.json"
-        )
-
-        # 파일이 존재하는지 확인합니다.
-        if not os.path.exists(credential_path):
-            raise FileNotFoundError(
-                f"Firebase 서비스 계정 키 파일을 찾을 수 없습니다: '{credential_path}'\n"
-                "Firebase 콘솔 → 프로젝트 설정 → 서비스 계정 → "
-                "'새 비공개 키 생성'을 클릭하여 JSON 파일을 다운로드한 뒤 "
-                "프로젝트 폴더에 'serviceAccountKey.json' 이름으로 저장하세요."
-            )
-
-        # 서비스 계정 JSON 파일로 인증 정보를 생성합니다.
-        cred = credentials.Certificate(credential_path)
+        
+        # 1. 환경 변수에서 JSON 문자열을 직접 읽어오기 시도 (Railway 배포용)
+        service_account_json = os.getenv("SERVICE_ACCOUNT_KEY")
+        
+        if service_account_json:
+            try:
+                # 문자열을 파이썬 딕셔너리로 변환
+                cred_dict = json.loads(service_account_json)
+                cred = credentials.Certificate(cred_dict)
+                print("✅ 환경변수에서 Firebase 인증 정보를 불러왔습니다.")
+            except json.JSONDecodeError as e:
+                raise ValueError(f"SERVICE_ACCOUNT_KEY 환경변수의 JSON 형식이 잘못되었습니다: {e}")
+        else:
+            # 2. 로컬 파일에서 읽기 시도 (로컬 개발용)
+            credential_path = os.getenv("FIREBASE_CREDENTIAL_PATH", "serviceAccountKey.json")
+            if not os.path.exists(credential_path):
+                raise FileNotFoundError(
+                    "❌ Firebase 인증 정보가 없습니다.\n"
+                    "Railway 배포 시: SERVICE_ACCOUNT_KEY 환경변수에 JSON 전체 내용을 복사하세요.\n"
+                    f"로컬 개발 시: '{credential_path}' 파일이 필요합니다."
+                )
+            
+            cred = credentials.Certificate(credential_path)
+            print(f"✅ 로컬 파일({credential_path})에서 Firebase 인증 정보를 불러왔습니다.")
 
         # Firebase 앱을 초기화합니다.
         firebase_admin.initialize_app(cred)
